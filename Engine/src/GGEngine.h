@@ -4,3 +4,7 @@
 
 
 #include "GGEngine/Application.h"
+
+//-----Application entry point-----
+#include "GGEngine/EntryPoint.h"
+//---------------------------------

@@ -12,4 +12,6 @@ namespace GGEngine {
 
         void Run();
     };
+
+    Application* CreateApplication();
 }
