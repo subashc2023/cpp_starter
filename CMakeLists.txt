@@ -39,6 +39,9 @@ if(GGENGINE_BUILD_DLL)
         Engine/src/GGEngine/Events/ApplicationEvent.h
         Engine/src/GGEngine/Events/KeyEvent.h
         Engine/src/GGEngine/Events/MouseEvent.h
+        Engine/src/GGEngine/Window.h
+        Engine/src/Platform/Windows/WindowsWindow.h
+        Engine/src/Platform/Windows/WindowsWindow.cpp
         Engine/src/ggpch.h
         Engine/src/ggpch.cpp
     )
@@ -55,6 +58,9 @@ else()
         Engine/src/GGEngine/Events/ApplicationEvent.h
         Engine/src/GGEngine/Events/KeyEvent.h
         Engine/src/GGEngine/Events/MouseEvent.h
+        Engine/src/GGEngine/Window.h
+        Engine/src/Platform/Windows/WindowsWindow.h
+        Engine/src/Platform/Windows/WindowsWindow.cpp
         Engine/src/ggpch.h
         Engine/src/ggpch.cpp
     )
@@ -66,11 +72,19 @@ target_compile_definitions(Engine PUBLIC GG_PLATFORM_WINDOWS)
 add_subdirectory(Vendor/spdlog)
 target_link_libraries(Engine PUBLIC spdlog::spdlog)
 
+# GLFW
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+add_subdirectory(Vendor/glfw)
+target_link_libraries(Engine PRIVATE glfw)
+
 target_include_directories(Engine PUBLIC
     ${CMAKE_SOURCE_DIR}/Engine/src
 )
 
-target_precompile_headers(Engine PRIVATE Engine/src/ggpch.h)
+target_precompile_headers(Engine PUBLIC Engine/src/ggpch.h)
 
 set_target_properties(Engine PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${BIN_ROOT}/Engine"

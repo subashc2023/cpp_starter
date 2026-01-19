@@ -51,3 +51,5 @@
 #ifdef GG_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif
+
+#include "GGEngine/Log.h"

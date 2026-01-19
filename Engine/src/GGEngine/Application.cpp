@@ -1,26 +1,24 @@
 #include "Application.h"
 
+#include "GGEngine/Window.h"
 #include "GGEngine/Events/ApplicationEvent.h"
 #include "GGEngine/Log.h"
 
 namespace GGEngine {
-    Application::Application() {
+    Application::Application() 
+    {
+        m_Window = std::unique_ptr<Window>(Window::Create());
     }
-    Application::~Application() {
+    Application::~Application() 
+    {
+
     }
 
-    void Application::Run() {
-
-        WindowResizeEvent e(1280, 720);
-        if (e.IsInCategory(EventCategoryApplication)) 
+    void Application::Run() 
+    {
+        while (m_Running) 
         {
-            GG_TRACE(e);
+            m_Window->OnUpdate();
         }
-        if (e.IsInCategory(EventCategoryInput)) {
-            GG_TRACE(e);
-        }
-
-
-        while (true);
     }
 }
