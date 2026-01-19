@@ -10,6 +10,9 @@ if /I "%MODE%"=="debug" (
 ) else if /I "%MODE%"=="release" (
     set PRESET_CONFIG=windows-clang-mingw64-release-static
     set BUILD_PRESET=windows-clang-mingw64-release-static
+) else if /I "%MODE%"=="dist" (
+    set PRESET_CONFIG=windows-clang-mingw64-dist
+    set BUILD_PRESET=windows-clang-mingw64-dist
 ) else (
     rem Allow direct preset name for future extensions.
     set PRESET_CONFIG=%MODE%

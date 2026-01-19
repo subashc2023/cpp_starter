@@ -45,6 +45,19 @@
       }
     },
     {
+      "name": "linux-clang-ninja-dist",
+      "displayName": "Linux Clang (Ninja, Dist, Static)",
+      "description": "Dist build with a static Engine (no DLL), stripped logging on Linux.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/linux",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Dist",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "GGENGINE_BUILD_DLL": "OFF"
+      }
+    },
+    {
       "name": "macos-clang-ninja",
       "displayName": "macOS Clang (Ninja)",
       "description": "Build with clang/clang++ on macOS using Ninja.",
@@ -70,6 +83,19 @@
       }
     },
     {
+      "name": "macos-clang-ninja-dist",
+      "displayName": "macOS Clang (Ninja, Dist, Static)",
+      "description": "Dist build with a static Engine (no DLL), stripped logging on macOS.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/macos",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Dist",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "GGENGINE_BUILD_DLL": "OFF"
+      }
+    },
+    {
       "name": "windows-clang-mingw64-release-static",
       "displayName": "Windows Clang + MinGW-w64 (Ninja, Release, Static)",
       "description": "Release build with a static Engine (no DLL).",
@@ -77,6 +103,20 @@
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/clang-mingw64.cmake",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "GGENGINE_BUILD_DLL": "OFF"
+      }
+    },
+    {
+      "name": "windows-clang-mingw64-dist",
+      "displayName": "Windows Clang + MinGW-w64 (Ninja, Dist, Static)",
+      "description": "Dist build with a static Engine (no DLL), stripped logging.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Dist",
         "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/clang-mingw64.cmake",
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++",
@@ -101,6 +141,11 @@
       "configurePreset": "linux-clang-ninja-release-static"
     },
     {
+      "name": "linux-clang-ninja-dist",
+      "displayName": "Build (Linux, Dist)",
+      "configurePreset": "linux-clang-ninja-dist"
+    },
+    {
       "name": "macos-clang-ninja-debug",
       "displayName": "Build (macOS, Debug)",
       "configurePreset": "macos-clang-ninja"
@@ -111,9 +156,19 @@
       "configurePreset": "macos-clang-ninja-release-static"
     },
     {
+      "name": "macos-clang-ninja-dist",
+      "displayName": "Build (macOS, Dist)",
+      "configurePreset": "macos-clang-ninja-dist"
+    },
+    {
       "name": "windows-clang-mingw64-release-static",
       "displayName": "Build (Release, Static)",
       "configurePreset": "windows-clang-mingw64-release-static"
+    },
+    {
+      "name": "windows-clang-mingw64-dist",
+      "displayName": "Build (Dist)",
+      "configurePreset": "windows-clang-mingw64-dist"
     }
   ]
 }

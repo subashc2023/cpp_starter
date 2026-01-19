@@ -44,9 +44,4 @@ On Linux/macOS:
 .\bin\Debug-x64\Editor\Editor.exe
 ```
 
-Expected output:
-
-- Sandbox: `Sandbox Add(2, 3) = 5`
-- Editor: `Editor Add(10, 20) = 30`
-
 For release builds, alternate outputs, presets, and tool paths, see `AGENTS.md`.

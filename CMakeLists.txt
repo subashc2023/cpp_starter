@@ -5,6 +5,16 @@ project(GGEngine LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Dist Build Type Configuration
+set(CMAKE_CXX_FLAGS_DIST "${CMAKE_CXX_FLAGS_RELEASE}")
+set(CMAKE_C_FLAGS_DIST "${CMAKE_C_FLAGS_RELEASE}")
+set(CMAKE_EXE_LINKER_FLAGS_DIST "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+set(CMAKE_SHARED_LINKER_FLAGS_DIST "${CMAKE_SHARED_LINKER_FLAGS_RELEASE}")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Dist")
+    add_compile_definitions(GG_DIST)
+endif()
+
 # Output layout (as requested)
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(BIN_CONFIG "Release-x64")
@@ -23,6 +33,8 @@ if(GGENGINE_BUILD_DLL)
         Engine/src/GGEngine/Application.h
         Engine/src/GGEngine/Application.cpp
         Engine/src/GGEngine/Core.h
+        Engine/src/GGEngine/Log.h
+        Engine/src/GGEngine/Log.cpp
     )
     target_compile_definitions(Engine PRIVATE GG_BUILD_DLL)
 else()
@@ -31,10 +43,16 @@ else()
         Engine/src/GGEngine/Application.h
         Engine/src/GGEngine/Application.cpp
         Engine/src/GGEngine/Core.h
+        Engine/src/GGEngine/Log.h
+        Engine/src/GGEngine/Log.cpp
     )
 endif()
 
 target_compile_definitions(Engine PUBLIC GG_PLATFORM_WINDOWS)
+
+# Dependencies
+add_subdirectory(Vendor/spdlog)
+target_link_libraries(Engine PUBLIC spdlog::spdlog)
 
 target_include_directories(Engine PUBLIC
     ${CMAKE_SOURCE_DIR}/Engine/src
