@@ -9,6 +9,8 @@
 
 namespace GGEngine {
 
+    class ImGuiLayer;
+
     class GG_API Application 
     {
     public:
@@ -21,12 +23,24 @@ namespace GGEngine {
 
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* layer);
+
+        void Close() { m_Running = false; }
+
+        inline Window& GetWindow() { return *m_Window; }
+
+        inline static Application& Get() { return *s_Instance; }
+
+        ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
+
     private:
         bool OnWindowClose(WindowCloseEvent& e);
         
         std::unique_ptr<Window> m_Window;
+        ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
+
+        static Application* s_Instance;
     };
 
     Application* CreateApplication();

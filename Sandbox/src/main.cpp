@@ -5,15 +5,19 @@ class ExampleLayer : public GGEngine::Layer
 public:
     ExampleLayer() : Layer("ExampleLayer") 
     {
-
     }
+
     void OnUpdate() override
     {
-        GG_INFO("ExampleLayer::OnUpdate");
     }
+
+    void OnImGuiRender() override
+    {
+        // Empty for now to test basic ImGui
+    }
+
     void OnEvent(GGEngine::Event& event) override
     {
-        GG_INFO("{0}", event);
     }
 };
 

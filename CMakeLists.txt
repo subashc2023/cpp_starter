@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(GGEngine LANGUAGES CXX)
+project(GGEngine LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,51 +27,38 @@ set(BIN_ROOT "${CMAKE_SOURCE_DIR}/bin/${BIN_CONFIG}")
 
 option(GGENGINE_BUILD_DLL "Build Engine as a shared library" ON)
 
+# Engine source files
+set(ENGINE_SOURCES
+    Engine/src/GGEngine.h
+    Engine/src/GGEngine/Application.h
+    Engine/src/GGEngine/Application.cpp
+    Engine/src/GGEngine/Core.h
+    Engine/src/GGEngine/Log.h
+    Engine/src/GGEngine/Log.cpp
+    Engine/src/GGEngine/Events/Event.h
+    Engine/src/GGEngine/Events/ApplicationEvent.h
+    Engine/src/GGEngine/Events/KeyEvent.h
+    Engine/src/GGEngine/Events/MouseEvent.h
+    Engine/src/GGEngine/Layer.cpp
+    Engine/src/GGEngine/Layer.h
+    Engine/src/GGEngine/LayerStack.cpp
+    Engine/src/GGEngine/LayerStack.h
+    Engine/src/GGEngine/Window.h
+    Engine/src/GGEngine/ImGui/ImGuiLayer.h
+    Engine/src/GGEngine/ImGui/ImGuiLayer.cpp
+    Engine/src/Platform/Windows/WindowsWindow.h
+    Engine/src/Platform/Windows/WindowsWindow.cpp
+    Engine/src/Platform/Vulkan/VulkanContext.h
+    Engine/src/Platform/Vulkan/VulkanContext.cpp
+    Engine/src/ggpch.h
+    Engine/src/ggpch.cpp
+)
+
 if(GGENGINE_BUILD_DLL)
-    add_library(Engine SHARED
-        Engine/src/GGEngine.h
-        Engine/src/GGEngine/Application.h
-        Engine/src/GGEngine/Application.cpp
-        Engine/src/GGEngine/Core.h
-        Engine/src/GGEngine/Log.h
-        Engine/src/GGEngine/Log.cpp
-        Engine/src/GGEngine/Events/Event.h
-        Engine/src/GGEngine/Events/ApplicationEvent.h
-        Engine/src/GGEngine/Events/KeyEvent.h
-        Engine/src/GGEngine/Events/MouseEvent.h
-        Engine/src/GGEngine/Layer.cpp
-        Engine/src/GGEngine/Layer.h
-        Engine/src/GGEngine/LayerStack.cpp
-        Engine/src/GGEngine/LayerStack.h
-        Engine/src/GGEngine/Window.h
-        Engine/src/Platform/Windows/WindowsWindow.h
-        Engine/src/Platform/Windows/WindowsWindow.cpp
-        Engine/src/ggpch.h
-        Engine/src/ggpch.cpp
-    )
+    add_library(Engine SHARED ${ENGINE_SOURCES})
     target_compile_definitions(Engine PRIVATE GG_BUILD_DLL)
 else()
-    add_library(Engine STATIC
-        Engine/src/GGEngine.h
-        Engine/src/GGEngine/Application.h
-        Engine/src/GGEngine/Application.cpp
-        Engine/src/GGEngine/Core.h
-        Engine/src/GGEngine/Log.h
-        Engine/src/GGEngine/Log.cpp
-        Engine/src/GGEngine/Events/Event.h
-        Engine/src/GGEngine/Events/ApplicationEvent.h
-        Engine/src/GGEngine/Events/KeyEvent.h
-        Engine/src/GGEngine/Events/MouseEvent.h
-        Engine/src/GGEngine/Layer.cpp
-        Engine/src/GGEngine/Layer.h
-        Engine/src/GGEngine/LayerStack.cpp
-        Engine/src/GGEngine/LayerStack.h
-        Engine/src/GGEngine/Window.h
-        Engine/src/Platform/Windows/WindowsWindow.h
-        Engine/src/Platform/Windows/WindowsWindow.cpp
-        Engine/src/ggpch.h
-        Engine/src/ggpch.cpp
-    )
+    add_library(Engine STATIC ${ENGINE_SOURCES})
 endif()
 
 target_compile_definitions(Engine PUBLIC GG_PLATFORM_WINDOWS)
@@ -79,7 +66,6 @@ target_compile_definitions(Engine PUBLIC GG_PLATFORM_WINDOWS)
 # Dependencies
 add_subdirectory(Vendor/spdlog)
 add_subdirectory(Vendor/glad)
-target_link_libraries(Engine PUBLIC spdlog::spdlog glad)
 
 # GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -87,7 +73,14 @@ set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 add_subdirectory(Vendor/glfw)
-target_link_libraries(Engine PRIVATE glfw)
+
+# ImGui
+add_subdirectory(Vendor/imgui)
+
+target_link_libraries(Engine 
+    PUBLIC spdlog::spdlog glad imgui
+    PRIVATE glfw
+)
 
 target_include_directories(Engine PUBLIC
     ${CMAKE_SOURCE_DIR}/Engine/src

@@ -1,10 +1,35 @@
 #include "GGEngine.h"
 
-class Editor : public GGEngine::Application {
+class EditorLayer : public GGEngine::Layer
+{
 public:
-    Editor() {
+    EditorLayer() : Layer("EditorLayer") 
+    {
     }
-    ~Editor() {
+
+    void OnUpdate() override
+    {
+    }
+
+    void OnImGuiRender() override
+    {
+        // Empty for now to test basic ImGui
+    }
+
+    void OnEvent(GGEngine::Event& event) override
+    {
+    }
+};
+
+class Editor : public GGEngine::Application 
+{
+public:
+    Editor() 
+    {
+        PushLayer(new EditorLayer());
+    }
+    ~Editor() 
+    {
     }
 };
 

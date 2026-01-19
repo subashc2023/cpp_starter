@@ -34,7 +34,6 @@ namespace GGEngine {
 
     class GG_API Event
     {
-        friend class EventDispatcher;
     public:
         virtual ~Event() = default;
         bool Handled() const { return m_Handled; }
@@ -53,7 +52,7 @@ namespace GGEngine {
         {
             return os << e.ToString();
         }
-    protected:
+
         bool m_Handled = false;
     };
 

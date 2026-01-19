@@ -1,19 +1,28 @@
 #include "Application.h"
 
-
 #include "GGEngine/Events/ApplicationEvent.h"
 #include "GGEngine/Window.h"
 #include "GGEngine/Log.h"
+#include "GGEngine/ImGui/ImGuiLayer.h"
 
 namespace GGEngine {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+    Application* Application::s_Instance = nullptr;
+
     Application::Application() 
     {
+        GG_CORE_ASSERT(!s_Instance, "Application already exists!");
+        s_Instance = this;
+
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+        m_ImGuiLayer = new ImGuiLayer();
+        PushOverlay(m_ImGuiLayer);
     }
+
     Application::~Application() 
     {
     }
@@ -34,7 +43,6 @@ namespace GGEngine {
     {
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-        GG_CORE_INFO("{0}", e);
 
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
         {
@@ -46,8 +54,6 @@ namespace GGEngine {
         }
     }
 
-   
-
     void Application::Run() 
     {
         while (m_Running) 
@@ -56,6 +62,16 @@ namespace GGEngine {
             {
                 layer->OnUpdate();
             }
+
+            m_ImGuiLayer->Begin();
+            if (m_ImGuiLayer->IsFrameStarted())
+            {
+                for (Layer* layer : m_LayerStack)
+                {
+                    layer->OnImGuiRender();
+                }
+            }
+            m_ImGuiLayer->End();
             
             m_Window->OnUpdate();
         }
@@ -66,4 +82,5 @@ namespace GGEngine {
         m_Running = false;
         return true;
     }
+
 }

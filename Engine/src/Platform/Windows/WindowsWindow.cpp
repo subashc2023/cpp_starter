@@ -44,11 +44,13 @@ namespace GGEngine {
             glfwSetErrorCallback(GLFWErrorCallback);
             s_GLFWInitialized = true;
         }
+
+        // Vulkan: No OpenGL context
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
         m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
         GG_CORE_ASSERT(m_Window, "Failed to create GLFW window");
-        glfwMakeContextCurrent(m_Window);
         glfwSetWindowUserPointer(m_Window, &m_Data);
-        SetVSync(true);
 
 
         // GLFW CALLBACKS SETUP
@@ -143,19 +145,12 @@ namespace GGEngine {
     void WindowsWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        // Vulkan: swapchain presentation handled by renderer
     }
 
     void WindowsWindow::SetVSync(bool enabled)
     {
-        if (enabled)
-        {
-            glfwSwapInterval(1);
-        }
-        else
-        {
-            glfwSwapInterval(0);
-        }
+        // Vulkan: VSync controlled via present mode in swapchain
         m_Data.VSync = enabled;
     }
 
