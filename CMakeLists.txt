@@ -35,6 +35,10 @@ if(GGENGINE_BUILD_DLL)
         Engine/src/GGEngine/Core.h
         Engine/src/GGEngine/Log.h
         Engine/src/GGEngine/Log.cpp
+        Engine/src/GGEngine/Events/Event.h
+        Engine/src/GGEngine/Events/ApplicationEvent.h
+        Engine/src/GGEngine/Events/KeyEvent.h
+        Engine/src/GGEngine/Events/MouseEvent.h
     )
     target_compile_definitions(Engine PRIVATE GG_BUILD_DLL)
 else()
@@ -45,6 +49,10 @@ else()
         Engine/src/GGEngine/Core.h
         Engine/src/GGEngine/Log.h
         Engine/src/GGEngine/Log.cpp
+        Engine/src/GGEngine/Events/Event.h
+        Engine/src/GGEngine/Events/ApplicationEvent.h
+        Engine/src/GGEngine/Events/KeyEvent.h
+        Engine/src/GGEngine/Events/MouseEvent.h
     )
 endif()
 
