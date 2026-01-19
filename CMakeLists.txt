@@ -78,7 +78,8 @@ target_compile_definitions(Engine PUBLIC GG_PLATFORM_WINDOWS)
 
 # Dependencies
 add_subdirectory(Vendor/spdlog)
-target_link_libraries(Engine PUBLIC spdlog::spdlog)
+add_subdirectory(Vendor/glad)
+target_link_libraries(Engine PUBLIC spdlog::spdlog glad)
 
 # GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
